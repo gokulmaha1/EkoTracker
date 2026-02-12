@@ -377,3 +377,42 @@ if (document.getElementById('addUserForm')) {
     });
 }
 
+
+// Reset Password Logic
+function openResetPasswordModal(userId, userName) {
+    document.getElementById('resetUserId').value = userId;
+    document.querySelector('#resetPasswordModal .modal-title').textContent = `Reset Password for ${userName}`;
+    resetPasswordModal.show();
+}
+
+if (document.getElementById('resetPasswordForm')) {
+    document.getElementById('resetPasswordForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userId = document.getElementById('resetUserId').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const token = checkAuth();
+
+        try {
+            const res = await fetch(`${API_URL}/auth/users/${userId}/reset-password`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ password: newPassword })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert('Password updated successfully');
+                resetPasswordModal.hide();
+                e.target.reset();
+            } else {
+                alert(data.message || 'Failed to update password');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Server error');
+        }
+    });
+}
