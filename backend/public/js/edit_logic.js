@@ -28,6 +28,9 @@ async function updateStore(id) {
         phone: document.getElementById('storePhone').value,
         area: document.getElementById('storeArea').value,
         address: document.getElementById('storeAddress').value,
+        lat: 0,
+        lng: 0,
+        status: 'active'
     };
 
     try {
@@ -51,10 +54,10 @@ async function updateStore(id) {
 function resetStoreForm() {
     const form = document.getElementById('addStoreForm');
     form.reset();
-    form.onsubmit = null; // Remove custom submit handler
-    // Re-attach original create handler (will be handled by page reload or we need to separate create logic)
-    // Best way: reload page or re-attach the event listener. 
-    // Simplified: We reload the page or better yet, make the submit handler dynamic.
+
+    // Restore original create handler
+    // We assume handleCreateStore is available globally or we reload
+    // Reloading is safest to clear any state
     window.location.reload();
 }
 

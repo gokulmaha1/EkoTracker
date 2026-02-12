@@ -173,7 +173,8 @@ function showAddStoreModal() {
     storeModal.show();
 }
 
-document.getElementById('addStoreForm')?.addEventListener('submit', async (e) => {
+// Store Form Handler
+async function handleCreateStore(e) {
     e.preventDefault();
     const token = checkAuth();
     const storeData = {
@@ -202,7 +203,11 @@ document.getElementById('addStoreForm')?.addEventListener('submit', async (e) =>
     } catch (error) {
         alert(error.message);
     }
-});
+}
+
+if (document.getElementById('addStoreForm')) {
+    document.getElementById('addStoreForm').onsubmit = handleCreateStore;
+}
 
 // Product Modals
 let productModal;
@@ -210,7 +215,8 @@ function showAddProductModal() {
     productModal.show();
 }
 
-document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
+// Product Form Handler
+async function handleCreateProduct(e) {
     e.preventDefault();
     const token = checkAuth();
     const prodData = {
@@ -236,7 +242,11 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
     } catch (error) {
         alert(error.message);
     }
-});
+}
+
+if (document.getElementById('addProductForm')) {
+    document.getElementById('addProductForm').onsubmit = handleCreateProduct;
+}
 
 if (window.location.pathname.includes('master_data.html')) {
     checkAuth();
