@@ -21,6 +21,7 @@ function logout() {
 }
 
 let addUserModal;
+let resetPasswordModal;
 
 function checkAuth() {
     const token = localStorage.getItem('token');
@@ -41,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (document.getElementById('addUserModal')) {
         addUserModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+    }
+    if (document.getElementById('resetPasswordModal')) {
+        resetPasswordModal = new bootstrap.Modal(document.getElementById('resetPasswordModal'));
     }
 });
 
@@ -312,7 +316,9 @@ async function fetchUsersPage() {
                     <td>${user.name}</td>
                     <td>${user.email}</td>
                     <td>${user.role}</td>
-                    <td>-</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="openResetPasswordModal(${user.id}, '${user.name}')">Reset Pass</button>
+                    </td>
                 </tr>
             `).join('');
         } else {
