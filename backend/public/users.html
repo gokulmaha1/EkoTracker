@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EkoTracker Admin - Dashboard</title>
+    <title>EkoTracker Admin - Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
@@ -31,7 +31,7 @@
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="dashboard.html">
+                            <a class="nav-link" href="dashboard.html">
                                 <span data-feather="home"></span>
                                 Dashboard
                             </a>
@@ -49,7 +49,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="users.html">
+                            <a class="nav-link active" aria-current="page" href="users.html">
                                 <span data-feather="users"></span>
                                 Users
                             </a>
@@ -61,56 +61,33 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Dashboard</h1>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card text-white bg-primary mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Stores</h5>
-                                <h2 class="card-text" id="totalStores">Loading...</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-white bg-success mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Orders</h5>
-                                <h2 class="card-text" id="totalOrders">Loading...</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-white bg-warning mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Products</h5>
-                                <h2 class="card-text" id="totalProducts">Loading...</h2>
-                            </div>
-                        </div>
+                    <h1 class="h2">Users (Sales Reps)</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <!-- Add User Button (Not implemented fully on API yet, but UI placeholder) -->
+                        <button type="button" class="btn btn-sm btn-outline-secondary" disabled>
+                            <span data-feather="plus"></span>
+                            Add User
+                        </button>
                     </div>
                 </div>
 
-                <h4 class="mt-4">Recent Orders</h4>
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#ID</th>
-                                    <th>Store</th>
-                                    <th>Sales Rep</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ordersTableBody">
-                                <tr>
-                                    <td colspan="5" class="text-center">Loading...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">#ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="5" class="text-center">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </div>

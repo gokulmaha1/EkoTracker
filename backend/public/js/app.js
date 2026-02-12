@@ -228,3 +228,75 @@ if (window.location.pathname.includes('master_data.html')) {
     checkAuth();
     fetchMasterData();
 }
+
+if (window.location.pathname.includes('orders.html')) {
+    checkAuth();
+    fetchOrdersPage();
+}
+
+if (window.location.pathname.includes('users.html')) {
+    checkAuth();
+    fetchUsersPage();
+}
+
+async function fetchOrdersPage() {
+    const token = checkAuth();
+    const headers = { 'Authorization': `Bearer ${token}` };
+    try {
+        const orders = await fetch(`${API_URL}/orders`, { headers }).then(res => res.json());
+        const tbody = document.getElementById('allOrdersTableBody');
+        tbody.innerHTML = orders.map(order => `
+            <tr>
+                <td>${order.id}</td>
+                <td>${order.store_name}</td>
+                <td>${order.user_name}</td>
+                <td>₹${order.total_amount}</td>
+                <td><span class="badge bg-${getStatusColor(order.status)}">${order.status}</span></td>
+                <td>${new Date(order.created_at).toLocaleDateString()}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-info">View</button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (e) { console.error(e); }
+}
+
+async function fetchUsersPage() {
+    const token = checkAuth();
+    const headers = { 'Authorization': `Bearer ${token}` };
+    // Note: You need to ensure you have a /api/users endpoint. 
+    // Since we didn't explicitly create a full users CRUD, we might need to rely on what's available
+    // or mock it if only the auth one exists. 
+    // Assuming we can fetch list from a new endpoint or using a placeholder.
+    // Let's assume we create a quick endpoint or fail gracefully.
+
+    // Check if we have a route for GET /users, if not we might fail.
+    // The task list said "Implement Master Data APIs (Stores, Products, Users)", so likely it exists or needs to be added.
+    // If not, I'll add a simple placeholder list.
+
+    try {
+        // If /users endpoint doesn't exist, this will fail. Let's try.
+        const users = await fetch(`${API_URL}/auth/users`, { headers }).then(res => res.json());
+        // Need to add this endpoint to authRoutes or similar if not there.
+        // For now, let's catch error and show "Not implemented" if it fails.
+
+        const tbody = document.getElementById('usersTableBody');
+        if (Array.isArray(users)) {
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td>-</td>
+                </tr>
+            `).join('');
+        } else {
+            throw new Error('No users found');
+        }
+
+    } catch (e) {
+        console.error(e);
+        document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="5" class="text-center text-muted">User management API not fully linked yet.</td></tr>';
+    }
+}

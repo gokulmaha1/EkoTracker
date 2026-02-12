@@ -78,13 +78,19 @@ exports.login = async (req, res) => {
 
 exports.getMe = async (req, res) => {
     try {
-        const [users] = await db.execute('SELECT id, name, email, role, phone FROM users WHERE id = ?', [req.user.id]);
-        if (users.length === 0) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        res.json(users[0]);
+        const [rows] = await db.execute('SELECT id, name, email, role FROM users WHERE id = ?', [req.user.id]);
+        if (rows.length === 0) return res.status(404).json({ message: 'User not found' });
+        res.json(rows[0]);
     } catch (error) {
-        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const [rows] = await db.execute('SELECT id, name, email, role, created_at FROM users');
+        res.json(rows);
+    } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 };
