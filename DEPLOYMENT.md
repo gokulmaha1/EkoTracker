@@ -5,8 +5,9 @@
 - MySQL Server
 - Flutter SDK (v3.0+)
 - Android Studio / VS Code
+- Docker & Docker Compose (Optional)
 
-## Backend Setup
+## Backend Setup (Standard)
 1. **Navigate to backend directory**:
    ```bash
    cd backend
@@ -35,6 +36,18 @@
    ```
    The server will run on `http://localhost:3000`.
    The Admin Dashboard is available at `http://localhost:3000/index.html`.
+
+## Backend Setup (Docker) 🐳
+Easily deploy the backend and database with a single command.
+
+1. **Run Docker Compose**:
+   ```bash
+   docker-compose up -d --build
+   ```
+2. **Access**:
+   - Backend API: `http://localhost:3000`
+   - Admin Dashboard: `http://localhost:3000/index.html`
+   - Database: Accessible on port 3306 (User: root, Pass: rootpassword)
 
 ## Mobile App Setup
 1. **Navigate to mobile_app directory**:
