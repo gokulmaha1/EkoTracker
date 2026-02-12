@@ -20,13 +20,29 @@ function logout() {
     window.location.href = 'index.html';
 }
 
+let addUserModal;
+
 function checkAuth() {
     const token = localStorage.getItem('token');
     if (!token) {
         window.location.href = 'index.html';
+        return null;
     }
     return token;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Modals if element exists
+    if (document.getElementById('addStoreModal')) {
+        storeModal = new bootstrap.Modal(document.getElementById('addStoreModal'));
+    }
+    if (document.getElementById('addProductModal')) {
+        productModal = new bootstrap.Modal(document.getElementById('addProductModal'));
+    }
+    if (document.getElementById('addUserModal')) {
+        addUserModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+    }
+});
 
 // UI Helpers
 const loginForm = document.getElementById('loginForm');
@@ -154,7 +170,6 @@ async function fetchMasterData() {
 // Store Modals
 let storeModal;
 function showAddStoreModal() {
-    storeModal = new bootstrap.Modal(document.getElementById('addStoreModal'));
     storeModal.show();
 }
 
@@ -192,7 +207,6 @@ document.getElementById('addStoreForm')?.addEventListener('submit', async (e) =>
 // Product Modals
 let productModal;
 function showAddProductModal() {
-    productModal = new bootstrap.Modal(document.getElementById('addProductModal'));
     productModal.show();
 }
 
@@ -297,6 +311,53 @@ async function fetchUsersPage() {
 
     } catch (e) {
         console.error(e);
-        document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="5" class="text-center text-muted">User management API not fully linked yet.</td></tr>';
+        document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="5" class="text-center text-muted">Error loading users.</td></tr>';
     }
 }
+
+function showAddUserModal() {
+    addUserModal.show();
+}
+
+// Add User Form Submission
+if (document.getElementById('addUserForm')) {
+    document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const token = checkAuth();
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
+
+        const userData = {
+            name: document.getElementById('userName').value,
+            email: document.getElementById('userEmail').value,
+            password: document.getElementById('userPassword').value,
+            phone: document.getElementById('userPhone').value,
+            role: document.getElementById('userRole').value
+        };
+
+        try {
+            const res = await fetch(`${API_URL}/auth/register`, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(userData)
+            });
+
+            if (res.ok) {
+                alert('User created successfully!');
+                addUserModal.hide();
+                document.getElementById('addUserForm').reset();
+                fetchUsersPage(); // Refresh list
+            } else {
+                const data = await res.json();
+                alert('Error: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error creating user:', error);
+            alert('Failed to create user');
+        }
+    });
+}
+```
