@@ -142,8 +142,8 @@ async function fetchMasterData() {
                 <td>${store.area || '-'}</td>
                 <td>${store.phone || '-'}</td>
                 <td>
-                    <button class="btn btn-sm btn-info">Edit</button>
-                    <button class="btn btn-sm btn-danger">Delete</button>
+                    <button class="btn btn-sm btn-info" onclick="editStore(${store.id}, '${store.name}', '${store.area}', '${store.phone}', '${store.address}', '${store.owner_name}')">Edit</button>
+                    <!-- <button class="btn btn-sm btn-danger">Delete</button> -->
                 </td>
             </tr>
         `).join('');
@@ -157,7 +157,7 @@ async function fetchMasterData() {
                 <td>₹${prod.price}</td>
                 <td>${prod.stock}</td>
                 <td>
-                    <button class="btn btn-sm btn-info">Edit</button>
+                    <button class="btn btn-sm btn-info" onclick="editProduct(${prod.id}, '${prod.name}', '${prod.sku}', ${prod.price}, ${prod.stock})">Edit</button>
                 </td>
             </tr>
         `).join('');
