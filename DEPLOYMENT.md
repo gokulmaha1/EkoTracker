@@ -72,3 +72,71 @@ Easily deploy the backend and database with a single command.
   ```sql
   INSERT INTO users (name, email, password_hash, role) VALUES ('Admin', 'admin@ekotracker.com', '$2b$10$YourHashedPassword', 'admin');
   ```
+
+## Hostinger VPS Deployment (Quick Start) 🚀
+
+If you have a fresh Hostinger VPS (Ubuntu/Debian), run these commands one by one:
+
+### 1. Connect to VPS
+```bash
+ssh root@YOUR_VPS_IP
+# Enter your password when prompted
+```
+
+### 2. Install Docker & Git
+```bash
+apt update && apt upgrade -y
+apt install -y git docker.io docker-compose
+systemctl enable --now docker
+```
+
+### 3. Clone & Deploy
+```bash
+# Clone the repository
+git clone https://github.com/gokulmaha1/EkoTracker.git
+
+# Navigate to project
+cd EkoTracker
+
+# Start Backend & Database
+docker-compose up -d --build
+```
+
+### 4. Verify
+- App should be running at `http://YOUR_VPS_IP:3000`
+- Admin Dashboard: `http://YOUR_VPS_IP:3000/index.html`
+
+### 5. Nginx Reverse Proxy (Optional but Recommended)
+To access via domain and without port 3000:
+```bash
+apt install -y nginx
+
+# Create Config
+nano /etc/nginx/sites-available/ekotracker
+```
+
+Pages content:
+```nginx
+server {
+    listen 80;
+    server_name your_domain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+Activate:
+```bash
+ln -s /etc/nginx/sites-available/ekotracker /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+nginx -t
+systemctl restart nginx
+```
+
