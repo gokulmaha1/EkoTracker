@@ -69,9 +69,26 @@ Easily deploy the backend and database with a single command.
 ## Admin Dashboard
 - Access via `http://localhost:3000/index.html` after starting the backend.
 - Default Admin credentials: You need to create an admin user manually in the database first or use the registration API (if enabled for public).
-  ```sql
   INSERT INTO users (name, email, password_hash, role) VALUES ('Admin', 'admin@ekotracker.com', '$2b$10$YourHashedPassword', 'admin');
   ```
+
+## Creating verify Admin User 🛠️
+
+To create a new admin user easily, run this command inside the project directory:
+
+**For Docker (VPS):**
+```bash
+docker-compose exec backend node create_admin.js admin@example.com mypassword "Admin Name"
+```
+
+**For Local (Standard):**
+```bash
+cd backend
+node create_admin.js admin@example.com mypassword "Admin Name"
+```
+
+---
+
 
 ## Hostinger VPS Deployment (Quick Start) 🚀
 
