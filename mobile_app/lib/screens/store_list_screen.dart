@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/store_provider.dart';
-import '../models/store_model.dart';
 
 class StoreListScreen extends StatefulWidget {
-  const StoreListScreen({Key? key}) : super(key: key);
+  final bool isEmbedded;
+  const StoreListScreen({Key? key, this.isEmbedded = false}) : super(key: key);
 
   @override
   _StoreListScreenState createState() => _StoreListScreenState();
@@ -28,8 +28,16 @@ class _StoreListScreenState extends State<StoreListScreen> {
     final storeProvider = Provider.of<StoreProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Store'),
+      appBar: widget.isEmbedded 
+          ? null 
+          : AppBar(
+              title: const Text('Select Store'),
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push('/add-store');
+        },
+        child: const Icon(Icons.add),
       ),
       body: Column(
         children: [
@@ -60,7 +68,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
                         subtitle: Text(store.area ?? 'No Area'),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () {
-                           context.push('/order/${store.id}');
+                           context.push('/store/${store.id}');
                         },
                       );
                     },

@@ -5,6 +5,7 @@ import '../providers/product_provider.dart';
 import '../providers/order_provider.dart';
 import '../providers/store_provider.dart';
 import '../models/store_model.dart';
+import '../models/order_item.dart';
 
 class OrderEntryScreen extends StatefulWidget {
   final int storeId;

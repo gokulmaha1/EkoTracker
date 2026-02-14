@@ -2,18 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
+import '../providers/order_provider.dart';
+import '../widgets/sales_dashboard.dart';
+import 'order_history_screen.dart';
+import 'store_list_screen.dart';
+import 'timeline_screen.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _selectedIndex = 0;
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    SalesDashboard(),
+    StoreListScreen(isEmbedded: true), // Need to adjust StoreListScreen to be embeddable if it assumes Scaffold
+    OrderHistoryScreen(isEmbedded: true), // Need to adjust OrderHistoryScreen
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final user = authProvider.user;
+
+    // If StoreListScreen and OrderHistoryScreen are full Scaffolds, we might need to wrap them or adjust them.
+    // For now, let's assume valid pages. If they have Scaffolds, nested Scaffolds are okay but not ideal.
+    // Better to have specific widget content.
+    // Let's use simple indexing for now.
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('EkoTracker'),
+        title: const Text('EkoPro Dashboard'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -23,76 +51,54 @@ class DashboardScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Welcome, ${user?.name ?? 'User'}!',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            const SizedBox(height: 20),
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              children: [
-                _buildDashboardCard(
-                  context,
-                  icon: Icons.store,
-                  label: 'My Stores',
-                  onTap: () => context.push('/stores'),
-                  color: Colors.blue,
-                ),
-                _buildDashboardCard(
-                  context,
-                  icon: Icons.add_shopping_cart,
-                  label: 'New Order',
-                  onTap: () => context.push('/stores'), // Go to store list to pick one
-                  color: Colors.green,
-                ),
-                _buildDashboardCard(
-                  context,
-                  icon: Icons.history,
-                  label: 'Order History',
-                  onTap: () => context.push('/orders'),
-                  color: Colors.orange,
-                ),
-                _buildDashboardCard(
-                  context,
-                  icon: Icons.sync,
-                  label: 'Sync Data',
-                  onTap: () {
-                    // Trigger sync
-                  },
-                  color: Colors.purple,
-                ),
-              ],
-            ),
-          ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          final auth = Provider.of<AuthProvider>(context, listen: false);
+          final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+          
+          List<Future> futures = [
+            orderProvider.fetchOrders(),
+          ];
+
+          if (auth.user?.role == 'admin') {
+            futures.add(auth.fetchUsers());
+          }
+          
+          await Future.wait(futures);
+        },
+        child: IndexedStack(
+           index: _selectedIndex,
+           children: const [
+               SalesDashboard(),
+               TimelineScreen(isEmbedded: true),
+               StoreListScreen(isEmbedded: true), 
+               OrderHistoryScreen(isEmbedded: true),
+           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildDashboardCard(BuildContext context, {required IconData icon, required String label, required VoidCallback onTap, required Color color}) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 48, color: color),
-            const SizedBox(height: 12),
-            Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.feed),
+            label: 'Timeline',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.store),
+            label: 'Stores',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Orders',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
       ),
     );
   }

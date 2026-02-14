@@ -4,3 +4,10 @@ node_modules/
 coverage/
 .vscode/
 *.log
+
+# Gradle
+.gradle
+.gradle_home
+**/.gradle
+**/build
+**/android/.gradle_home

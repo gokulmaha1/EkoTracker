@@ -8,6 +8,8 @@ class Store {
   final double? lat;
   final double? lng;
 
+  final String? statusLevel; // lead, contacted, visited, etc.
+
   Store({
     required this.id,
     required this.name,
@@ -17,6 +19,7 @@ class Store {
     this.area,
     this.lat,
     this.lng,
+    this.statusLevel,
   });
 
   factory Store.fromJson(Map<String, dynamic> json) {
@@ -29,6 +32,7 @@ class Store {
       area: json['area'],
       lat: json['lat'] != null ? double.tryParse(json['lat'].toString()) : null,
       lng: json['lng'] != null ? double.tryParse(json['lng'].toString()) : null,
+      statusLevel: json['status_level'] ?? 'lead',
     );
   }
 
@@ -42,6 +46,7 @@ class Store {
       'area': area,
       'lat': lat,
       'lng': lng,
+      'status_level': statusLevel,
     };
   }
 }

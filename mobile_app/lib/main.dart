@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 import 'providers/auth_provider.dart';
 import 'providers/store_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/order_provider.dart';
+import 'providers/timeline_provider.dart';
 import 'config/routes.dart';
 import 'services/sync_service.dart';
 
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => StoreProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
+        ChangeNotifierProvider(create: (_) => TimelineProvider()),
       ],
       child: const App(),
     );
@@ -45,8 +46,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      routeInformationParser: appRouter.router.routeInformationParser,
-      routerDelegate: appRouter.router.routerDelegate,
+      routerConfig: appRouter.router,
     );
   }
 }

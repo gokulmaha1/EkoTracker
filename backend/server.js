@@ -8,7 +8,8 @@ const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
-const routeRoutes = require('./routes/routeRoutes');
+const locationRoutes = require('./routes/locationRoutes');
+const path = require('path');
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/stores', storeRoutes);
@@ -25,6 +27,9 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/invoices', invoiceRoutes);
 app.use('/api/routes', routeRoutes);
+app.use('/api/routes', routeRoutes);
+app.use('/api/locations', locationRoutes);
+app.use('/api/timeline', require('./routes/timelineRoutes'));
 
 const PORT = process.env.PORT || 3000;
 

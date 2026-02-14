@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:connectivity_plus/connectivity_plus.dart'; // Need to add this to pubspec if not there
 import 'dart:convert';
 import '../models/store_model.dart';
 import '../models/product_model.dart';

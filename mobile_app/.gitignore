@@ -44,3 +44,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Gradle
+.gradle
+.gradle_home
+android/.gradle
+android/.gradle_home
+**/.gradle
+**/build
+android_backup/
+build_log.txt
