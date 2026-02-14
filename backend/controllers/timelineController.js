@@ -9,7 +9,15 @@ exports.createPost = async (req, res) => {
     try {
         await db.execute(
             'INSERT INTO timeline_posts (user_id, store_id, type, description, image_url, gps_lat, gps_lng) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [user_id, store_id || null, type, description, image_url, gps_lat, gps_lng]
+            [
+                user_id,
+                store_id || null,
+                type,
+                description || null,
+                image_url || null,
+                gps_lat || null,
+                gps_lng || null
+            ]
         );
         res.status(201).json({ message: 'Post created successfully' });
     } catch (error) {
