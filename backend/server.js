@@ -26,8 +26,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/invoices', invoiceRoutes);
-app.use('/api/routes', routeRoutes);
-app.use('/api/routes', routeRoutes);
+
 app.use('/api/locations', locationRoutes);
 app.use('/api/timeline', require('./routes/timelineRoutes'));
 
