@@ -88,9 +88,25 @@ exports.getMe = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
     try {
-        const [rows] = await db.execute('SELECT id, name, email, role, created_at FROM users');
+        const [rows] = await db.execute('SELECT id, name, email, role, phone, monthly_sales_target, monthly_new_customer_target, created_at FROM users');
         res.json(rows);
     } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+exports.updateUserTargets = async (req, res) => {
+    const { id } = req.params;
+    const { monthly_sales_target, monthly_new_customer_target } = req.body;
+
+    try {
+        await db.execute(
+            'UPDATE users SET monthly_sales_target = ?, monthly_new_customer_target = ? WHERE id = ?',
+            [monthly_sales_target, monthly_new_customer_target, id]
+        );
+        res.json({ message: 'Targets updated successfully' });
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
 };

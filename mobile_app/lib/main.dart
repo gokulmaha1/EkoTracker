@@ -5,6 +5,7 @@ import 'providers/store_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/order_provider.dart';
 import 'providers/timeline_provider.dart';
+import 'providers/report_provider.dart';
 import 'config/routes.dart';
 import 'services/sync_service.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
         ChangeNotifierProvider(create: (_) => TimelineProvider()),
+        ChangeNotifierProvider(create: (_) => ReportProvider()),
       ],
       child: const App(),
     );

@@ -29,6 +29,7 @@ app.use('/api/invoices', invoiceRoutes);
 
 app.use('/api/locations', locationRoutes);
 app.use('/api/timeline', require('./routes/timelineRoutes'));
+app.use('/api/reports', require('./routes/reportRoutes'));
 
 const PORT = process.env.PORT || 3000;
 

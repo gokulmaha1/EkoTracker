@@ -4,6 +4,8 @@ class User {
   final String email;
   final String role;
   final String? phone;
+  final double monthlySalesTarget;
+  final int monthlyNewCustomerTarget;
 
   User({
     required this.id,
@@ -11,6 +13,8 @@ class User {
     required this.email,
     required this.role,
     this.phone,
+    this.monthlySalesTarget = 400000.0,
+    this.monthlyNewCustomerTarget = 20,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -20,6 +24,8 @@ class User {
       email: json['email'],
       role: json['role'],
       phone: json['phone'],
+      monthlySalesTarget: (json['monthly_sales_target'] ?? 400000.0).toDouble(),
+      monthlyNewCustomerTarget: json['monthly_new_customer_target'] ?? 20,
     );
   }
 

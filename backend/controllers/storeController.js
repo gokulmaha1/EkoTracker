@@ -30,11 +30,12 @@ exports.getStores = async (req, res) => {
 exports.createStore = async (req, res) => {
     const { name, owner_name, phone, address, area, lat, lng } = req.body;
     const image = req.file ? req.file.filename : null;
+    const created_by = req.user ? req.user.id : null;
 
     try {
         const [result] = await db.execute(
-            'INSERT INTO stores (name, owner_name, phone, address, area, lat, lng, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [name, owner_name, phone, address, area, lat, lng, image]
+            'INSERT INTO stores (name, owner_name, phone, address, area, lat, lng, image, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [name, owner_name, phone, address, area, lat, lng, image, created_by]
         );
         const [newStore] = await db.execute('SELECT * FROM stores WHERE id = ?', [result.insertId]);
         res.status(201).json(newStore[0]);
